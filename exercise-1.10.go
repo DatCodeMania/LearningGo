@@ -29,8 +29,8 @@ func fetch(url string, ch chan<- string) {
 		return
 	}
 
-	sanitizedUrl := strings.ReplaceAll(url, "http://", "")
-	sanitizedUrl = strings.ReplaceAll(sanitizedUrl, "https://", "")
+	sanitizedUrl := strings.TrimPrefix(url, "http://")
+	sanitizedUrl = strings.TrimPrefix(sanitizedUrl, "https://")
 	sanitizedUrl = strings.ReplaceAll(sanitizedUrl, "/", "-")
 	filename := fmt.Sprintf("%s-%s.txt", sanitizedUrl, time.Now().Format("15:04:05"))
 	file, err := os.Create(filename)
