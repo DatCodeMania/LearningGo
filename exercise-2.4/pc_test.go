@@ -1,6 +1,8 @@
-package popcount
+package main
 
-import "testing"
+import (
+	"testing"
+)
 
 var pc [256]byte
 
@@ -47,7 +49,13 @@ The current rightmost bit (e.g. 1 in 0001) is discarded, and the leftmost bit is
 This way our function is able to check every single bit out of the 64 passed to it.
 
 Bitwise operator explanation:
-& : AND - this operation only cares about the rightmost bit, and basically checks if one binary number equals another. e.g. if 1 AND 1 = true, if 1 AND 0 = false; essentially comparison
+& : AND - this operation (in our case) only cares about the rightmost bit, due to the 1 in x&1, this means that the 0th bit is checked; the 0th bit is the rightmost. It compares e.g. 0001 (mask) and 0111 (x), checking all of the bits, but in our case only the last one because that is what we specify in our mask.
+
+0001 - mask
+0111 - x
+----
+0001 - comparison returns 1, which for us is true - the last bits are identical.
+
 x >>= 1 : shorthand for x = x >> 1, all this does is shift the bits to the right, this is further explained above.
 */
 func PopCountShift(x uint64) int {
@@ -61,6 +69,19 @@ func PopCountShift(x uint64) int {
 	return count
 }
 
+/*
+x&(x-1) clears the rightmost non-zero bit of x.
+Using this information, we are able to count the number of set bits in x by counting the number of times we can clear the rightmost bit.
+*/
+func PopCountClear(x uint64) int {
+	count := 0
+	for x != 0 {
+		x = x & (x - 1)
+		count++
+	}
+	return count
+}
+
 func BenchmarkPopCountOriginal(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		PopCount(0x1234567890ABCDEF)
@@ -70,5 +91,11 @@ func BenchmarkPopCountOriginal(b *testing.B) {
 func BenchmarkPopCountLoop(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		PopCountLoop(0x1234567890ABCDEF)
+	}
+}
+
+func BenchmarkPopCountClear(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		PopCountClear(0x1234567890ABCDEF)
 	}
 }

@@ -1,4 +1,4 @@
-package popcount
+package main
 
 import "testing"
 
