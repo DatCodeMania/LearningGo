@@ -18,7 +18,9 @@ The way this works is the 8 bytes are shifted by n*8, e.g. shifted by 0 for n=0 
 Then, due to the way the byte function works, the rightmost byte is extracted.
 This basically goes over every byte out of 8, and extracts the rightmost one every time after shifting.
 
-For a deeper explanation read the PopCountShift comment
+# For a deeper explanation read the PopCountShift comment
+
+The reason this is the most efficient is that the table that is used to calculate the set bits is pre-calculated in the init function and stored in memory.
 */
 func PopCount(x uint64) int {
 	return int(pc[byte(x>>(0*8))] +
