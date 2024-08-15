@@ -1,5 +1,7 @@
 # LearningGo
 
+A repository where I upload my solutions to the exercises from the GOPL book, adding explanations and my own twists as I go, where I deem fit!
+
 ## Disclaimer
 Unless you are a Go beginner, you will probably not find much usage out of this repo!
 
