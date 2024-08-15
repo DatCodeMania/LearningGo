@@ -10,6 +10,7 @@ func init() {
 	}
 }
 
+// There is a detailed explanation of this in exercise-2.4's file
 func PopCount(x uint64) int {
 	return int(pc[byte(x>>(0*8))] +
 		pc[byte(x>>(1*8))] +
