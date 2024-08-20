@@ -71,6 +71,19 @@ func PopCountShift(x uint64) int {
 	return count
 }
 
+/*
+x&(x-1) clears the rightmost non-zero bit of x.
+Using this information, we are able to count the number of set bits in x by counting the number of times we can clear the rightmost bit.
+*/
+func PopCountClear(x uint64) int {
+	count := 0
+	for x != 0 {
+		x = x & (x - 1)
+		count++
+	}
+	return count
+}
+
 func BenchmarkPopCountOriginal(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		PopCount(0x1234567890ABCDEF)
@@ -80,5 +93,11 @@ func BenchmarkPopCountOriginal(b *testing.B) {
 func BenchmarkPopCountLoop(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		PopCountLoop(0x1234567890ABCDEF)
+	}
+}
+
+func BenchmarkPopCountClear(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		PopCountClear(0x1234567890ABCDEF)
 	}
 }
