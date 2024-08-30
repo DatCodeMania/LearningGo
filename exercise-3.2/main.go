@@ -44,7 +44,7 @@ func corner(i, j int) (float64, float64) {
 	y := xyrange * (float64(j)/cells - 0.5)
 
 	// Compute surface height z.
-	z := eggbox(x, y)
+	//z := eggbox(x, y)
 
 	//z := saddle(x, y)
 

@@ -30,6 +30,9 @@ func main() {
 			if ax*ay*bx*by*cx*cy*dx*dy == 0 {
 				continue
 			}
+			red, blue := color(i, j)
+			fmt.Printf("<polygon points='%g,%g %g,%g %g,%g %g,%g' fill=\"rgb(%d,0,%d)\"/>\n",
+				ax, ay, bx, by, cx, cy, dx, dy, red, blue)
 
 			//fmt.Printf("<polygon points='%g,%g %g,%g %g,%g %g,%g'/>\n",
 			//	ax, ay, bx, by, cx, cy, dx, dy)
@@ -60,4 +63,26 @@ func corner(i, j int) (float64, float64) {
 func f(x, y float64) float64 {
 	r := math.Hypot(x, y) // distance from (0,0)
 	return math.Sin(r) / r
+}
+
+func color(i, j int) (int, int) {
+	_, _, z := xyz(i, j)
+	r, b := 0.0, 0.0
+	if !math.IsNaN(z) {
+		if z >= 0 {
+			r = 255 * z
+		} else {
+			b = 255 * math.Abs(z)
+		}
+	}
+	return int(r), int(b)
+}
+
+func xyz(i, j int) (float64, float64, float64) {
+	// Find point (x,y) at corner of cell (i,j).
+	x := xyrange * (float64(i)/cells - 0.5)
+	y := xyrange * (float64(j)/cells - 0.5)
+	z := f(x, y)
+
+	return x, y, z
 }
